@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BinaryTree</title>
+</head>
+<body>
+  <script>
+    // 创建二叉树对象
+    let BinaryTree = function () {
+      // 创建二叉树节点
+      let Node = function (key) {
+        this.key = key
+        this.left = null
+        this.right = null
+      }
+      // 创建空二叉树
+      let root = null
+
+      // 节点插入
+      this.insert = function (key) {
+        let newNode = new Node(key)
+        if (root === null) {
+          root = newNode
+        } else {
+          this.insertNode(root, newNode)
+        }
+      }
+
+      // 节点插入位置计算
+      this.insertNode = function (node, newNode) {
+        if (node.key > newNode.key) {
+          if (node.left === null) {
+            node.left = newNode
+          } else {
+            this.insertNode(node.left, newNode)
+          }
+        } else {
+          if (node.right === null) {
+            node.right = newNode
+          } else {
+            this.insertNode(node.right, newNode)
+          }
+        }
+      }
+
+      // 中序遍历
+      this.inOrderTraverse = function (callback) {
+        inOrderTraverseNode(root, callback)
+      }
+      let inOrderTraverseNode = function (node, callback) {
+        if (node != null) {
+          inOrderTraverseNode(node.left, callback)
+          callback(node.key)
+          inOrderTraverseNode(node.right, callback)
+        }
+      }
+
+      // 前序遍历
+      this.preOrderTraverse = function (callback) {
+        preOrderTraverseNode(root, callback)
+      }
+
+      let preOrderTraverseNode = function (node, callback) {
+        if (node != null) {
+          callback(node.key)
+          preOrderTraverseNode(node.left, callback)
+          preOrderTraverseNode(node.right, callback)
+        }
+      }
+    }
+
+    let nodes = [8, 1, 2, 4, 15, 13, 6, 7, 10]
+
+    let binaryTree = new BinaryTree()
+    nodes.forEach(function (node) {
+      binaryTree.insert(node)
+    })
+
+    binaryTree.inOrderTraverse(function (key) {
+      console.log(key)
+    })
+
+    binaryTree.preOrderTraverse(function (key) {
+      console.log(key)
+    })
+  </script>
+</body>
+</html>
