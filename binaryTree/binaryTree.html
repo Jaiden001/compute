@@ -62,7 +62,6 @@
       this.preOrderTraverse = function (callback) {
         preOrderTraverseNode(root, callback)
       }
-
       let preOrderTraverseNode = function (node, callback) {
         if (node != null) {
           callback(node.key)
@@ -70,22 +69,120 @@
           preOrderTraverseNode(node.right, callback)
         }
       }
+
+      // 后续遍历
+      this.postOrderTraverse = function (callback) {
+        postOrderTraverseNode(root, callback)
+      }
+      let postOrderTraverseNode = function (node, callback) {
+        if (node !== null) {
+          postOrderTraverseNode(node.left, callback)
+          postOrderTraverseNode(node.right, callback)
+          callback(node.key)
+        }
+      }
+
+      // 查找最大节点
+      this.max = function (callback) {
+        maxNode(root, callback)
+      }
+      let maxNode = function (node, callback) {
+        if (node !== null) {
+          while (node.right !== null) {
+            node = node.right
+          }
+          callback(node.key)
+        }
+      }
+
+      // 查找最小节点
+      this.min = function (callback) {
+        minNode(root, callback)
+      }
+      let minNode = function (node, callback) {
+        if (node !== null) {
+          while (node.left !== null) {
+            node = node.left
+          }
+          callback(node.key)
+        }
+      }
+
+      // 查找节点
+      this.search = function (searchKey) {
+        return searchNode(root, searchKey)
+      }
+      let searchNode = function (node, searchKey) {
+        if (node !== null) {
+          if (node.key > searchKey) {
+            return searchNode(node.left, searchKey)
+          } else if (node.key < searchKey) {
+            return searchNode(node.right, searchKey)
+          } else {
+            return true
+          }
+        } else {
+          return false
+        }
+      }
+
+      this.remove = function (removeKey) {
+        return removeNode(root, removeKey)
+      }
+      let removeNode = function (node, removeKey) {
+        if (node === null) {
+          return null
+        }
+        if (node.key > removeKey) {
+          node.left = removeNode(node.left, removeKey)
+          return node
+        } else if (node.key < removeKey) {
+          node.right = removeNode(node.right, removeKey)
+          return node
+        } else {
+          if (node.left === null && node.right === null) {
+            node = null
+            return node
+          } else if (node.left !== null) {
+            node = node.left
+            return node
+          } else {
+            node = node.right
+            return node
+          }
+        }
+      }
     }
 
-    let nodes = [8, 1, 2, 4, 15, 13, 6, 7, 10]
+    let nodes = [8, 5, 2, 4, 15, 13, 6, 1, 7, 10, 14, 18, 20]
 
     let binaryTree = new BinaryTree()
     nodes.forEach(function (node) {
       binaryTree.insert(node)
     })
 
-    binaryTree.inOrderTraverse(function (key) {
+    // binaryTree.inOrderTraverse(function (key) {
+    //   console.log(key)
+    // })
+
+    // binaryTree.preOrderTraverse(function (key) {
+    //   console.log(key)
+    // })
+
+    binaryTree.postOrderTraverse(function (key) {
       console.log(key)
     })
 
-    binaryTree.preOrderTraverse(function (key) {
-      console.log(key)
+    binaryTree.max(function (key) {
+      console.log('maxNode is' + key)
     })
+
+    binaryTree.min(function (key) {
+      console.log('minNode is' + key)
+    })
+    console.log(binaryTree.remove(5))
+    
+    console.log(binaryTree.search(1))
   </script>
 </body>
 </html>
